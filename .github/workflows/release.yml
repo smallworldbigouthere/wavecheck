@@ -1,0 +1,63 @@
+name: release
+
+# Tag a version (e.g. `git tag v0.1.0 && git push --tags`) to build signed
+# installers for macOS + Windows, publish a draft GitHub Release, and generate
+# the `latest.json` auto-update manifest.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest # Apple Silicon (aarch64)
+            args: ""
+          - platform: windows-latest # x86_64
+            args: ""
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Fetch engine sidecars (yt-dlp + ffmpeg)
+        run: node scripts/fetch-sidecars.mjs
+
+      - name: Build, sign, and release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # --- Auto-update signing (required for latest.json) ---
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          # --- macOS code signing + notarization (optional: unsigned if unset) ---
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          # Keep build paths out of the binary (defence-in-depth; runner paths are already neutral).
+          RUSTFLAGS: "--remap-path-prefix=${{ github.workspace }}=/b"
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "wavecheck ${{ github.ref_name }}"
+          releaseBody: "Download the installer for your OS below. Auto-update is enabled."
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}

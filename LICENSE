@@ -1,0 +1,32 @@
+wavecheck License
+Copyright © 2026 wavecheck. All rights reserved.
+
+wavecheck is free to download and use. The application code and branding remain
+the property of the copyright holder.
+
+You MAY:
+  - Download, install, and use wavecheck at no cost, for any personal purpose.
+
+You MAY NOT, without prior written permission from the copyright holder:
+  - Sell, rent, sublicense, or otherwise charge for wavecheck;
+  - Redistribute modified versions, or rebrand, republish, or pass it off as
+    your own;
+  - Remove or alter these notices.
+
+THIRD-PARTY COMPONENTS
+wavecheck is a front-end that bundles independent open-source programs — notably
+yt-dlp and FFmpeg — each governed by its own license. See THIRD-PARTY-NOTICES.md.
+Those components remain licensed under their respective terms (the Unlicense for
+yt-dlp; GPL/LGPL for FFmpeg), and nothing in this license limits the rights you
+have in those components under their own licenses. wavecheck claims no ownership
+over them.
+
+NO WARRANTY
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT
+HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM, OUT OF,
+OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+The user is responsible for using wavecheck in compliance with the terms of
+service of any site they access and with applicable law.
