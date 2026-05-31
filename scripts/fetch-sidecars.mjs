@@ -33,10 +33,12 @@ const YTDLP = {
 }[platform];
 
 // ffmpeg/ffprobe static builds from eugeneware/ffmpeg-static (GPL).
+// NB: their asset names have NO .exe suffix (even for Windows); the local
+// output filename adds .exe below via `exe`.
 const FF_SUFFIX = {
   "darwin-arm64": "darwin-arm64",
   "darwin-x64": "darwin-x64",
-  "win32-x64": "win32-x64.exe",
+  "win32-x64": "win32-x64",
   "linux-x64": "linux-x64",
 }[`${platform}-${arch}`];
 
